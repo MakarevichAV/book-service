@@ -13,7 +13,11 @@ const sequelize = new Sequelize(
         host: process.env.DB_HOST || 'localhost',
         dialect: process.env.DB_DIALECT || 'mysql',
         port: process.env.DB_PORT || 3306,
-        logging: false
+        logging: false,
+        define: {
+            timestamps: false,
+            createdAt: false,
+        }
     }
 )
 
