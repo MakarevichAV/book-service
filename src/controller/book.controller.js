@@ -2,7 +2,7 @@ import {Author, Book, Publisher} from "../model/index.js";
 import {sequelize} from "../config/database.js";
 
 export const addBook = async (req, res) => {
-    const t = await sequelize.transaction()
+    const t = await sequelize.transaction({readOnly: true})
     try {
         const {title, isbn, authors, publisher} = req.body
         const existingBook = await Book.findByPk(isbn, { transaction: t })
@@ -11,9 +11,8 @@ export const addBook = async (req, res) => {
             return res.status(409).send({error: `Book with ISBN ${isbn} already exists`})
         }
         // create or find a publisher
-        let publisherInstance = await Publisher.findByPk(publisher, { transaction: t })
-        if (!publisherInstance) {
-            publisherInstance = await Publisher.create({publisher_name: publisher}, {transaction: t})
+        if (!await Publisher.findByPk(publisher, { transaction: t })) {
+            await Publisher.create({publisher_name: publisher}, {transaction: t})
         }
         // Process the author
         const authorRecords = []
