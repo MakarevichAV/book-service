@@ -36,8 +36,18 @@ const BooksAuthors = sequelize.define('BooksAuthors', {
 }, {tableName: 'books_authors'})
 
 // Books and Authors: Many-To-Many relationship
-Book.belongsToMany(Author, {through: BooksAuthors, foreignKey: 'isbn', otherKey: 'author_name', as: 'authors'})
-Author.belongsToMany(Book, {through: BooksAuthors, foreignKey: 'author_name', otherKey: 'isbn', as: 'books'})
+Book.belongsToMany(Author, {
+    through: BooksAuthors,
+    foreignKey: 'isbn',
+    otherKey: 'author_name',
+    as: 'authors'
+})
+Author.belongsToMany(Book, {
+    through: BooksAuthors,
+    foreignKey: 'author_name',
+    otherKey: 'isbn',
+    as: 'books'
+})
 
 const syncModels = async () => {
     try {
