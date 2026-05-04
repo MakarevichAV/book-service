@@ -2,7 +2,7 @@ import {Author, Book, Publisher} from "../model/index.js";
 import {sequelize} from "../config/database.js";
 
 export const addBook = async (req, res) => {
-    const t = await sequelize.transaction({readOnly: true})
+    const t = await sequelize.transaction()
     try {
         const {title, isbn, authors, publisher} = req.body
         const existingBook = await Book.findByPk(isbn, {transaction: t})
@@ -62,7 +62,7 @@ export const findBookByIsbn = async (req, res) => {
 }
 
 export const removeBook = async (req, res) => {
-    const t = await sequelize.transaction({readOnly: true})
+    const t = await sequelize.transaction()
     try {
         const book = await Book.findByPk(req.params.isbn, {
             include: [
@@ -93,4 +93,17 @@ export const removeBook = async (req, res) => {
         return res.status(500).send({error: e.message, message: 'Failed to remove book'})
     }
 
+}
+
+
+export const updatedBookTitle = async (req, res) => {
+    // TODO
+}
+
+export const findBookByAuthor = async (req, res) => {
+    // TODO
+}
+
+export const findBookByPublisher = async (req, res) => {
+    // TODO
 }
